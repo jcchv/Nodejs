@@ -11,7 +11,7 @@ http.createServer(function (req, res) {
         var html_string = html.toString();
         var variables = html_string.match(/[^\{\}]+(?=\})/g);
         var name = " ";
-
+        
         var parametros = p(req);
 
         for (var i = variables.length - 1; i >= 0; i--) {
