@@ -2,5 +2,9 @@ html
     head
         title Hello World using Express and jade (Pug)
     body
-        h1 Hello World
-            p!= hola
+        - var arreglo = [1,2,3,4,5];
+        - for (var i = arreglo.length -1; i >= 0;i--)
+            p!= "<h1>"+arreglo[i]+"</h1>"
+                p.
+                    Hola haz click en #[a(href="#") este link ]
+        
