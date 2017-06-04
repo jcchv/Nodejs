@@ -19,7 +19,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
-    User.find(function(err,doc){
+    User.find(function (err, doc) {
         console.log(doc);
         res.render("login");
     })
@@ -32,13 +32,17 @@ app.post("/users", function (req, res) {
         password_confirmation: req.body.password_confirmation,
         username: req.body.username
     });
-    console.log(user.password_confirmation);
-    user.save(function (err) {
-        if(err){
+
+
+    user.save().then(function (us) {
+        res.send("Guardamos el usuario Exitosamente");
+    }, function (err) {
+        if (err) {
             console.log(String(err));
+            res.send("No pudimos guardar la informacion");
         }
-        res.send("Data uploaded");
     });
+
 
 });
 
