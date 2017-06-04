@@ -1,22 +1,12 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var User = require("./models/user").User;
 var app = express();
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
 
-mongoose.connect("mongodb://localhost/curso_node");
 
-var userSchemaJSON = {
-    email: String,
-    password: String
-};
 
-var user_schema = new Schema(userSchemaJSON);
-
-var User = mongoose.model("User", user_schema);
 
 app.use("/public", express.static('public'));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
