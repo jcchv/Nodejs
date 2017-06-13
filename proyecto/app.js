@@ -20,8 +20,8 @@ app.use(bodyParser.urlencoded({
 
 
 app.use(cookieSession({
-    name:"session",
-    keys:["llave-1","llave-2"]
+    name: "session",
+    keys: ["llave-1", "llave-2"]
 }));
 
 app.set("view engine", "jade");
