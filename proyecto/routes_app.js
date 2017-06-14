@@ -46,14 +46,26 @@ router.route("/imagenes/:id")
                     })
                 }
             })
-            res.render("app/imagenes/show", {
-                imagen: imagen
-            });
 
         })
 
     })
     .delete(function (req, res) {
+
+        Imagen.findById(req.params.id, function (err, imagen) {
+            imagen.remove()
+        })
+
+        Imagen.findOneAndRemove({
+            _id: req.param.id
+        }, function (err) {
+            if (!err) {
+                res.redirect("/app/imagenes");
+            } else {
+                console.log(err);
+                res.redirect("/app/imagenes" + req.param.id);
+            }
+        })
 
     });
 
