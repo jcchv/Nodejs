@@ -5,7 +5,12 @@ var fs = require("fs")
 var image_finder_middleware = require("./middlewares/find_image");
 /* app.com/app/ */
 router.get("/", function (req, res) {
-    res.render("app/home")
+    Imagen.find({}).populate("creator")
+    .exec(function(err,imagenes){
+        if(err) console.log(err);
+        res.render("app/home",{imagenes:imagenes});
+    })
+
 });
 
 /* REST */
@@ -80,7 +85,7 @@ router.route("/imagenes")
         var imagen = new Imagen(data);
         imagen.save(function (err) {
             if (!err) {
-                fs.rename(req.body.archivo.path, "public/imagenes/"+imagen._id+"."+extension);
+                fs.rename(req.body.archivo.path, "public/imagenes/" + imagen._id + "." + extension);
                 res.redirect("/app/imagenes/" + imagen._id);
             } else {
                 console.log(imagen);

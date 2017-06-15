@@ -26,7 +26,9 @@ app.use(cookieSession({
     name: "session",
     keys: ["llave-1", "llave-2"]
 }));
-app.use(formidable.parse({ keepExtensions:true }));
+app.use(formidable.parse({
+    keepExtensions: true
+}));
 app.set("view engine", "jade");
 
 app.get("/", function (req, res) {
