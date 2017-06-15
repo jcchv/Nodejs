@@ -1,31 +1,32 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var User = require("./models/user").User;
-var cookieSession = require("cookie-session");
+var session = require("express-session");
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
-var methodOverride = require("method-override");
 var formidable = require("express-formidable");
-
+var RedisStore = require("connect-redis")(session);
+var methodOverride = require("method-override");
 var app = express();
 
 app.use("/public", express.static('public'));
 app.use(bodyParser.json());
-app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({
     extended: true
-}));
+}))
+app.use(methodOverride("_method"));
 
-/* /app */
+var sessionMiddleware = session({
+    store: new RedisStore({}),
+    secret: "super ultra secret word"
+})
 
 
-/* / */
-
-
-app.use(cookieSession({
+/*app.use(cookieSession({
     name: "session",
     keys: ["llave-1", "llave-2"]
-}));
+}));*/
+app.use(sessionMiddleware);
 app.use(formidable.parse({
     keepExtensions: true
 }));
