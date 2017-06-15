@@ -5,6 +5,7 @@ var cookieSession = require("cookie-session");
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
 var methodOverride = require("method-override");
+var formidable = require("express-formidable");
 
 var app = express();
 
@@ -25,7 +26,7 @@ app.use(cookieSession({
     name: "session",
     keys: ["llave-1", "llave-2"]
 }));
-
+app.use(formidable.parse({ keepExtensions:true }));
 app.set("view engine", "jade");
 
 app.get("/", function (req, res) {
