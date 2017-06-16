@@ -6,9 +6,20 @@ var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
 var formidable = require("express-formidable");
 var RedisStore = require("connect-redis")(session);
+var http = require("http");
+var realtime = require("./realtime");
+
 var methodOverride = require("method-override");
 var app = express();
+var server = http.Server(app);
 
+var sessionMiddleware = session({
+    store: new RedisStore({}),
+    secret: "super ultra secret word"
+})
+
+realtime(server, sessionMiddleware)
+app.use(sessionMiddleware);
 app.use("/public", express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -16,10 +27,7 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(methodOverride("_method"));
 
-var sessionMiddleware = session({
-    store: new RedisStore({}),
-    secret: "super ultra secret word"
-})
+
 
 
 /*app.use(cookieSession({
@@ -83,4 +91,4 @@ app.post("/sessions", function (req, res) {
 app.use("/app", session_middleware);
 app.use("/app", router_app);
 
-app.listen(8080);
+server.listen(8080);
