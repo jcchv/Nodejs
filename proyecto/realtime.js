@@ -1,10 +1,18 @@
-module.exports = function(server,sessionMiddleware){
+module.exports = function (server, sessionMiddleware) {
     var io = require("socket.io")(server);
-    
-    io.use(function(socket,next){
-        sessionMiddleware(socket.request,socket.request.res,next);
+    var redis = require("redis");
+    var client = redis.createClient();
+
+    client.subscribe("images");
+    io.use(function (socket, next) {
+        sessionMiddleware(socket.request, socket.request.res, next);
     })
-    io.sockets.on("connection",function(socket){
+    
+    client.on("message",function(channel,message){
+        console.log("Recibimos un mensaje del canal "+channel)
+        console.log(message);
+    });
+    io.sockets.on("connection", function (socket) {
         console.log(socket.request.session.user_id);
     });
 }
